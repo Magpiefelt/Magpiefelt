@@ -237,6 +237,7 @@ GST_RATE = 0.05
 DEFAULT_CURRENCY = 'CAD'
 
 # Oscar settings - must come after MEDIA_URL is defined
+OSCAR_DELETE_IMAGE_FILES = True
 OSCAR_SHOP_NAME = 'Magpie Felt'
 OSCAR_SHOP_TAGLINE = 'Handmade Wool Felting Kits and Art'
 OSCAR_DEFAULT_CURRENCY = 'CAD'
