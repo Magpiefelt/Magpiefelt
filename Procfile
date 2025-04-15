@@ -1,1 +1,1 @@
-web: gunicorn magpie_crafts.wsgi:application --log-file -
+echo "web: gunicorn magpie_crafts.wsgi:application" > Procfile
