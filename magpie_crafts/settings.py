@@ -2,9 +2,18 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 from django.urls import reverse_lazy
-import os
-os.makedirs(STATIC_ROOT, exist_ok=True)
 
+
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
+# Add this AFTER STATIC_ROOT is defined
+import os
+
+os.makedirs(STATIC_ROOT, exist_ok=True)
 # Load environment variables from .env file
 load_dotenv()
 
