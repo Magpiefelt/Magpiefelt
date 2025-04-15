@@ -479,7 +479,7 @@ OSCAR_DASHBOARD_NAVIGATION = [
         ]
     },
 
-    AUTHENTICATION_BACKENDS = [
+    AUTHENTICATION_BACKENDS == [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
