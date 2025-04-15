@@ -18,13 +18,13 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(','
 
 # Application definition
 INSTALLED_APPS = [
-      'django.contrib.admin',
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites'
+    'django.contrib.sites',  # Add comma here
     'oscar',
     'oscar.apps.address',
     'oscar.apps.analytics',
@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'oscar.apps.checkout',
     'oscar.apps.shipping',
     'oscar.apps.payment',
-    'oscar.apps.partner'
+    'oscar.apps.partner',  # Add comma here
     'oscar.apps.offer',
     'oscar.apps.order',
     'oscar.apps.customer',
@@ -54,8 +54,6 @@ INSTALLED_APPS = [
     'oscar.apps.dashboard.vouchers',
     'oscar.apps.dashboard.communications',
     'oscar.apps.dashboard.shipping',
-    'oscar.apps.partner',
-SITE_ID = 1
     
     # Third-party apps
     'tailwind',
@@ -76,6 +74,9 @@ SITE_ID = 1
     'videos',
     'ai_content',
 ]
+
+# Move SITE_ID here, after INSTALLED_APPS
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
