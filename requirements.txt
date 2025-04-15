@@ -7,7 +7,7 @@ django-browser-reload==1.12.1
 django-storages==1.14.2
 django-tailwind==3.8.0
 django-haystack==3.2.1
-django-tables2==2.4.1
+django-tables2==2.3.4
 django-treebeard==4.5.1
 django-oscar==3.2
 django-widget-tweaks==1.4.12
