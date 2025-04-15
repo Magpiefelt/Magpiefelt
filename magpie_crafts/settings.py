@@ -24,7 +24,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',  # Add comma here
+    'django.contrib.sites',  # Required by Django Oscar
+    
+    # Django Oscar apps
     'oscar',
     'oscar.apps.address',
     'oscar.apps.analytics',
@@ -34,8 +36,6 @@ INSTALLED_APPS = [
     'oscar.apps.checkout',
     'oscar.apps.shipping',
     'oscar.apps.payment',
-    'oscar.apps.partner', 
-    'oscar.apps.communication', # Add comma here
     'oscar.apps.offer',
     'oscar.apps.order',
     'oscar.apps.customer',
@@ -55,16 +55,20 @@ INSTALLED_APPS = [
     'oscar.apps.dashboard.vouchers',
     'oscar.apps.dashboard.communications',
     'oscar.apps.dashboard.shipping',
+    'oscar.apps.partner',  # Required for product availability
+    'oscar.apps.communication',  # Added missing communication app
     
-    # Third-party apps
-    'tailwind',
-    'django_browser_reload',
-    'storages',
+    # Third-party apps required by Oscar
     'widget_tweaks',
     'haystack',
     'treebeard',
     'sorl.thumbnail',
     'django_tables2',
+    
+    # Other third-party apps
+    'tailwind',
+    'django_browser_reload',
+    'storages',
     
     # Project apps
     'products',
@@ -76,7 +80,7 @@ INSTALLED_APPS = [
     'ai_content',
 ]
 
-# Move SITE_ID here, after INSTALLED_APPS
+# Required by Django Oscar
 SITE_ID = 1
 
 MIDDLEWARE = [
@@ -89,7 +93,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_browser_reload.middleware.BrowserReloadMiddleware',
-     'oscar.apps.basket.middleware.BasketMiddleware',
+    'oscar.apps.basket.middleware.BasketMiddleware',  # Oscar basket middleware
 ]
 
 ROOT_URLCONF = 'magpie_crafts.urls'
@@ -190,79 +194,6 @@ if os.environ.get('USE_S3', 'False') == 'True':
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 else:
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# Oscar settings
-OSCAR_SHOP_NAME = 'Magpie Felt'
-OSCAR_SHOP_TAGLINE = 'Handmade Wool Felting Kits and Art'
-OSCAR_DEFAULT_CURRENCY = 'CAD'
-OSCAR_FROM_EMAIL = 'noreply@magpiefelt.ca'
-OSCAR_DYNAMIC_CLASS_LOADER = 'oscar.core.loading.default_class_loader'
-OSCAR_REQUIRED_ADDRESS_FIELDS = ('first_name', 'last_name', 'line1', 'city', 'country', 'postcode')
-OSCAR_SLUG_ALLOW_UNICODE = False
-OSCAR_SLUG_MAP = None
-OSCAR_SLUG_FUNCTION = 'oscar.core.utils.default_slugifier'
-OSCAR_HIDDEN_FEATURES = []
-OSCAR_MISSING_IMAGE_URL = MEDIA_URL + 'image_not_found.jpg'
-OSCAR_UPLOAD_ROOT = os.path.join(MEDIA_ROOT, 'uploads/')
-OSCAR_COOKIES_SECURE = False
-OSCAR_COOKIES_HTTPONLY = True
-OSCAR_USE_LESS = False
-OSCAR_USE_DATADOG = False
-OSCAR_ALLOW_ANON_CHECKOUT = True
-OSCAR_ALLOW_ANON_REVIEWS = True
-OSCAR_MODERATE_REVIEWS = False
-OSCAR_SEND_REGISTRATION_EMAIL = True
-OSCAR_EAGER_ALERTS = False
-OSCAR_LOGIN_REDIRECT_URL = '/'
-OSCAR_DASHBOARD_DEFAULT_ACCESS_FUNCTION = 'oscar.apps.dashboard.nav.default_access_fn'
-# Oscar Dashboard Navigation
-OSCAR_DASHBOARD_NAVIGATION = [
-    {
-        'label': 'Dashboard',
-        'icon': 'fas fa-tachometer-alt',
-        'url_name': 'dashboard:index',
-    },
-    {
-        'label': 'Catalogue',
-        'icon': 'fas fa-sitemap',
-        'children': [
-            {
-                'label': 'Products',
-                'url_name': 'dashboard:catalogue-product-list',
-            },
-            {
-                'label': 'Categories',
-                'url_name': 'dashboard:catalogue-category-list',
-            },
-        ]
-    },
-    {
-        'label': 'Customers',
-        'icon': 'fas fa-users',
-        'children': [
-            {
-                'label': 'Customers',
-                'url_name': 'dashboard:users-index',
-            },
-        ]
-    },
-    {
-        'label': 'Orders',
-        'icon': 'fas fa-shopping-cart',
-        'children': [
-            {
-                'label': 'Orders',
-                'url_name': 'dashboard:order-list',
-            },
-        ]
-    },
-]
-
-# Haystack settings (required by Oscar)
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
-    },
-}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -297,3 +228,75 @@ GST_RATE = 0.05
 
 # Currency settings
 DEFAULT_CURRENCY = 'CAD'
+
+# Oscar settings - must come after MEDIA_URL is defined
+OSCAR_SHOP_NAME = 'Magpie Felt'
+OSCAR_SHOP_TAGLINE = 'Handmade Wool Felting Kits and Art'
+OSCAR_DEFAULT_CURRENCY = 'CAD'
+OSCAR_FROM_EMAIL = 'noreply@magpiefelt.ca'
+OSCAR_DYNAMIC_CLASS_LOADER = 'oscar.core.loading.default_class_loader'
+OSCAR_REQUIRED_ADDRESS_FIELDS = ('first_name', 'last_name', 'line1', 'city', 'country', 'postcode')
+OSCAR_SLUG_ALLOW_UNICODE = False
+OSCAR_SLUG_MAP = None
+OSCAR_SLUG_FUNCTION = 'oscar.core.utils.default_slugifier'
+OSCAR_HIDDEN_FEATURES = []
+OSCAR_MISSING_IMAGE_URL = MEDIA_URL + 'image_not_found.jpg'
+OSCAR_UPLOAD_ROOT = os.path.join(MEDIA_ROOT, 'uploads/')
+OSCAR_COOKIES_SECURE = False
+OSCAR_COOKIES_HTTPONLY = True
+OSCAR_USE_LESS = False
+OSCAR_USE_DATADOG = False
+OSCAR_ALLOW_ANON_CHECKOUT = True
+OSCAR_ALLOW_ANON_REVIEWS = True
+OSCAR_MODERATE_REVIEWS = False
+OSCAR_SEND_REGISTRATION_EMAIL = True
+OSCAR_EAGER_ALERTS = False
+OSCAR_LOGIN_REDIRECT_URL = '/'
+OSCAR_DASHBOARD_DEFAULT_ACCESS_FUNCTION = 'oscar.apps.dashboard.nav.default_access_fn'
+
+# Oscar Dashboard Navigation
+OSCAR_DASHBOARD_NAVIGATION = [
+    {
+        'label': 'Dashboard',
+        'icon': 'fas fa-tachometer-alt',
+        'url_name': 'dashboard:index',
+    },
+    {
+        'label': 'Catalogue',
+        'icon': 'fas fa-sitemap',
+        'children': [
+            {
+                'label': 'Products',
+                'url_name': 'dashboard:catalogue-product-list',
+            },
+            {
+                'label': 'Categories',
+                'url_name': 'dashboard:catalogue-category-list',
+            },
+            {
+                'label': 'Product Types',
+                'url_name': 'dashboard:catalogue-class-list',
+            },
+        ]
+    },
+    {
+        'label': 'Customers',
+        'icon': 'fas fa-users',
+        'children': [
+            {
+                'label': 'Customers',
+                'url_name': 'dashboard:users-index',
+            },
+        ]
+    },
+    {
+        'label': 'Orders',
+        'icon': 'fas fa-shopping-cart',
+        'children': [
+            {
+                'label': 'Orders',
+                'url_name': 'dashboard:order-list',
+            },
+        ]
+    },
+]
