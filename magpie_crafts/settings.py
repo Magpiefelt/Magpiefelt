@@ -2,6 +2,8 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 from django.urls import reverse_lazy
+import os
+os.makedirs(STATIC_ROOT, exist_ok=True)
 
 # Load environment variables from .env file
 load_dotenv()
