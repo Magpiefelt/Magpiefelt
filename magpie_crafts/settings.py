@@ -48,6 +48,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.flatpages', # Required by Django Oscar
+
+    # Django Allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     
     # Django Oscar apps
     'oscar',
@@ -259,6 +264,17 @@ GST_RATE = 0.05
 
 # Currency settings
 DEFAULT_CURRENCY = 'CAD'
+
+# Django Allauth settings
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# Allauth settings
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_EMAIL_REQUIRED = True
 
 # Oscar settings - must come after MEDIA_URL is defined
 OSCAR_SHOP_NAME = 'Magpie Felt'
