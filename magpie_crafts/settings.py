@@ -34,7 +34,8 @@ INSTALLED_APPS = [
     'oscar.apps.checkout',
     'oscar.apps.shipping',
     'oscar.apps.payment',
-    'oscar.apps.partner',  # Add comma here
+    'oscar.apps.partner', 
+    'oscar.apps.communication', # Add comma here
     'oscar.apps.offer',
     'oscar.apps.order',
     'oscar.apps.customer',
