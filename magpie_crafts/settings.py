@@ -261,7 +261,25 @@ OSCAR_SEND_REGISTRATION_EMAIL = True
 OSCAR_EAGER_ALERTS = False
 OSCAR_LOGIN_REDIRECT_URL = '/'
 OSCAR_DASHBOARD_DEFAULT_ACCESS_FUNCTION = 'oscar.apps.dashboard.nav.default_access_fn'
-
+OSCAR_SEARCH_FACETS = {
+    'fields': {
+        'product_class': {'name': 'Type', 'field': 'product_class'},
+        'rating': {'name': 'Rating', 'field': 'rating'},
+    },
+    'queries': {
+        'price_range': {
+            'name': 'Price range',
+            'field': 'price',
+            'queries': [
+                # Price ranges
+                ('0_15', 'Under $15'),
+                ('15_50', '$15 to $50'),
+                ('50_100', '$50 to $100'),
+                ('100_', 'Over $100'),
+            ]
+        }
+    }
+}
 # Oscar Dashboard Navigation
 OSCAR_DASHBOARD_NAVIGATION = [
     {
