@@ -24,11 +24,32 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'oscar',
+    'oscar.apps.address',
+    'oscar.apps.analytics',
+    'oscar.apps.catalogue',
+    'oscar.apps.catalogue.reviews',
+    'oscar.apps.basket',
+    'oscar.apps.checkout',
+    'oscar.apps.shipping',
+    'oscar.apps.payment',
+    'oscar.apps.offer',
+    'oscar.apps.order',
+    'oscar.apps.customer',
+    'oscar.apps.search',
+    'oscar.apps.voucher',
+    'oscar.apps.wishlists',
+    'oscar.apps.dashboard',
     
     # Third-party apps
     'tailwind',
     'django_browser_reload',
     'storages',
+    'widget_tweaks',
+    'haystack',
+    'treebeard',
+    'sorl.thumbnail',
+    'django_tables2',
     
     # Project apps
     'products',
@@ -50,7 +71,19 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_browser_reload.middleware.BrowserReloadMiddleware',
+     'oscar.apps.basket.middleware.BasketMiddleware',
 ]
+# Oscar settings
+OSCAR_SHOP_NAME = 'Magpie Felt'
+OSCAR_DEFAULT_CURRENCY = 'CAD'
+OSCAR_DYNAMIC_CLASS_LOADER = 'oscar.core.loading.default_class_loader'
+
+# Haystack settings (required by Oscar)
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+    },
+}
 
 ROOT_URLCONF = 'magpie_crafts.urls'
 
@@ -167,12 +200,12 @@ else:
     DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
 
 # Stripe settings
-STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY', '')
-STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', '')
+STRIPE_PUBLIC_KEY = os.environ.get('pk_test_51REBhaICm0BfGMhchpHaqPkclDgVfqdIQcVYhheJr1Nv6Yp63Y7i29hfug6URPGsYnLfWXWC9i97O54pFqGhW3hC00pWUJVPL3', '')
+STRIPE_SECRET_KEY = os.environ.get('sk_test_51REBhaICm0BfGMhc9sr7BQnZOHNKtDmWkCwNWyyP96CZ8UAiuwdri6yM5RxXELEX6eWy25xaZfnTeuMkyCW9F3Jq00SYqzdq5T', '')
 STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET', '')
 
 # OpenAI API settings
-OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY', '')
+OPENAI_API_KEY = os.environ.get('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', '')
 
 # Canadian GST rate (5%)
 GST_RATE = 0.05
