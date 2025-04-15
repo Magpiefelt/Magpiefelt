@@ -1,14 +1,22 @@
 {
   "builds": [
     {
-      "src": "magpie_crafts/wsgi.py",
+      "src": "vercel_app.py",
       "use": "@vercel/python"
+    },
+    {
+      "src": "static/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/(.*) ",
-      "dest": "magpie_crafts/wsgi.py"
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/vercel_app.py"
     }
   ]
 }
