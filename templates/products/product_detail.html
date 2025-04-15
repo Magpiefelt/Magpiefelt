@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2">
+            <!-- Product Images -->
+            <div class="p-6">
+                {% if product.primary_image %}
+                <img src="{{ product.primary_image.original.url }}" alt="{{ product.title }}" class="w-full h-auto rounded-lg shadow-md mb-4">
+                {% else %}
+                <div class="w-full h-64 bg-gray-200 flex items-center justify-center rounded-lg mb-4">
+                    <span class="text-gray-500">No image available</span>
+                </div>
+                {% endif %}
+                
+                {% if product.images.all %}
+                <div class="grid grid-cols-4 gap-2 mt-4">
+                    {% for image in product.images.all %}
+                    <img src="{{ image.thumbnail.url }}" alt="{{ product.title }}" class="w-full h-20 object-cover rounded cursor-pointer hover:opacity-75 transition">
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Product Details -->
+            <div class="p-6">
+                <div class="mb-4">
+                    <span class="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-full">
+                        {{ product.get_product_type_display_name }}
+                    </span>
+                </div>
+                
+                <h1 class="text-3xl font-bold mb-2">{{ product.title }}</h1>
+                
+                <div class="text-2xl font-bold text-indigo-600 mb-4">${{ product.price.incl_tax }}</div>
+                
+                {% if product.description %}
+                <div class="prose mb-6">
+                    {{ product.description|linebreaks }}
+                </div>
+                {% endif %}
+                
+                <!-- Product-specific details -->
+                {% if product.product_type == 'kit' %}
+                <div class="mb-6">
+                    {% if product.difficulty_level %}
+                    <div class="flex items-center mb-2">
+                        <span class="font-semibold w-32">Difficulty:</span>
+                        <span>{{ product.difficulty_level }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    {% if product.time_to_complete %}
+                    <div class="flex items-center mb-2">
+                        <span class="font-semibold w-32">Time to Complete:</span>
+                        <span>{{ product.time_to_complete }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    {% if product.materials_included %}
+                    <div class="mb-2">
+                        <span class="font-semibold block mb-1">Materials Included:</span>
+                        <div class="pl-4">{{ product.materials_included|linebreaks }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+                
+                {% if product.product_type == 'art' %}
+                <div class="mb-6">
+                    {% if product.techniques_used %}
+                    <div class="mb-2">
+                        <span class="font-semibold block mb-1">Techniques Used:</span>
+                        <div class="pl-4">{{ product.techniques_used|linebreaks }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+                
+                <!-- Add to Cart Form -->
+                <form method="post" action="{% url 'cart:add_to_cart' product.id %}" class="mb-6">
+                    {% csrf_token %}
+                    <div class="flex items-center mb-4">
+                        <label for="quantity" class="mr-4 font-semibold">Quantity:</label>
+                        <div class="flex items-center border border-gray-300 rounded">
+                            <button type="button" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 transition" onclick="decrementQuantity()">-</button>
+                            <input type="number" name="quantity" id="quantity" value="1" min="1" class="w-12 text-center border-0 focus:ring-0">
+                            <button type="button" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 transition" onclick="incrementQuantity()">+</button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded transition">
+                        Add to Cart
+                    </button>
+                </form>
+                
+                <!-- Shipping Info -->
+                <div class="border-t border-gray-200 pt-4">
+                    <h3 class="font-semibold mb-2">Shipping Information:</h3>
+                    <p class="text-gray-600 text-sm">
+                        Shipping within Canada. Local pickup available in Edmonton, Alberta.
+                        All prices in CAD and include GST.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Related Products -->
+    {% if related_products %}
+    <div class="mt-12">
+        <h2 class="text-2xl font-bold mb-6">You May Also Like</h2>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for related in related_products %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:transform hover:scale-105">
+                <a href="{{ related.get_absolute_url }}">
+                    {% if related.primary_image %}
+                    <img src="{{ related.primary_image.original.url }}" alt="{{ related.title }}" class="w-full h-48 object-cover">
+                    {% else %}
+                    <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                        <span class="text-gray-500">No image available</span>
+                    </div>
+                    {% endif %}
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold mb-2">{{ related.title }}</h3>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-bold text-indigo-600">${{ related.price.incl_tax }}</span>
+                            <span class="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-full">
+                                {{ related.get_product_type_display_name }}
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    function incrementQuantity() {
+        const input = document.getElementById('quantity');
+        input.value = parseInt(input.value) + 1;
+    }
+    
+    function decrementQuantity() {
+        const input = document.getElementById('quantity');
+        const currentValue = parseInt(input.value);
+        if (currentValue > 1) {
+            input.value = currentValue - 1;
+        }
+    }
+</script>
+{% endblock %}

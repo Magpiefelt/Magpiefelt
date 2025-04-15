@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">Your Shopping Cart</h1>
+    
+    {% if cart.items.all %}
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <!-- Cart Items -->
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subtotal</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for item in cart.items.all %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                {% if item.product.primary_image %}
+                                <div class="flex-shrink-0 h-16 w-16">
+                                    <img class="h-16 w-16 object-cover rounded" src="{{ item.product.primary_image.original.url }}" alt="{{ item.product.title }}">
+                                </div>
+                                {% else %}
+                                <div class="flex-shrink-0 h-16 w-16 bg-gray-200 flex items-center justify-center rounded">
+                                    <span class="text-gray-500 text-xs">No image</span>
+                                </div>
+                                {% endif %}
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">
+                                        <a href="{{ item.product.get_absolute_url }}" class="hover:text-indigo-600 transition">
+                                            {{ item.product.title }}
+                                        </a>
+                                    </div>
+                                    <div class="text-sm text-gray-500">
+                                        {{ item.product.get_product_type_display_name }}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">${{ item.product.price.incl_tax }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <form method="post" action="{% url 'cart:update_cart' item.id %}" class="flex items-center" id="update-form-{{ item.id }}">
+                                {% csrf_token %}
+                                <div class="flex items-center border border-gray-300 rounded">
+                                    <button type="button" class="px-2 py-1 bg-gray-100 hover:bg-gray-200 transition" 
+                                            onclick="decrementQuantity('quantity-{{ item.id }}', {{ item.id }})">-</button>
+                                    <input type="number" name="quantity" id="quantity-{{ item.id }}" value="{{ item.quantity }}" min="1" 
+                                           class="w-12 text-center border-0 focus:ring-0" onchange="updateCart({{ item.id }})">
+                                    <button type="button" class="px-2 py-1 bg-gray-100 hover:bg-gray-200 transition" 
+                                            onclick="incrementQuantity('quantity-{{ item.id }}', {{ item.id }})">+</button>
+                                </div>
+                            </form>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">${{ item.subtotal }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <form method="post" action="{% url 'cart:remove_from_cart' item.id %}" class="inline">
+                                {% csrf_token %}
+                                <button type="submit" class="text-red-600 hover:text-red-900 transition">
+                                    Remove
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot class="bg-gray-50">
+                    <tr>
+                        <td colspan="3" class="px-6 py-4 text-right font-medium">Total:</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-lg font-bold text-indigo-600">${{ cart.total }}</div>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Checkout Section -->
+    <div class="mt-8 flex flex-col md:flex-row justify-between gap-6">
+        <div class="md:w-1/2">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-semibold mb-4">Shipping Information</h2>
+                <p class="text-gray-600 mb-4">
+                    We ship throughout Canada. Local pickup is available in Edmonton, Alberta.
+                </p>
+                <p class="text-gray-600 mb-4">
+                    All prices are in CAD and include GST.
+                </p>
+                <p class="text-gray-600">
+                    For international shipping or special requests, please contact us.
+                </p>
+            </div>
+        </div>
+        
+        <div class="md:w-1/2">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-semibold mb-4">Order Summary</h2>
+                <div class="flex justify-between mb-2">
+                    <span>Subtotal:</span>
+                    <span>${{ cart.total }}</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span>GST (included):</span>
+                    <span>${{ cart.total|floatformat:2|multiply:0.05|floatformat:2 }}</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span>Shipping:</span>
+                    <span>Calculated at checkout</span>
+                </div>
+                <div class="border-t border-gray-200 my-4"></div>
+                <div class="flex justify-between font-bold">
+                    <span>Total:</span>
+                    <span>${{ cart.total }}</span>
+                </div>
+                
+                <div class="mt-6">
+                    <a href="{% url 'checkout:index' %}" class="block w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded text-center transition">
+                        Proceed to Checkout
+                    </a>
+                </div>
+                
+                <div class="mt-4">
+                    <a href="{% url 'products:product_list' %}" class="block w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-4 rounded text-center transition">
+                        Continue Shopping
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% else %}
+    <div class="bg-white rounded-lg shadow-md p-12 text-center">
+        <h2 class="text-2xl font-semibold mb-4">Your cart is empty</h2>
+        <p class="text-gray-600 mb-8">Looks like you haven't added any products to your cart yet.</p>
+        <a href="{% url 'products:product_list' %}" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded transition">
+            Browse Products
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    function incrementQuantity(inputId, itemId) {
+        const input = document.getElementById(inputId);
+        input.value = parseInt(input.value) + 1;
+        updateCart(itemId);
+    }
+    
+    function decrementQuantity(inputId, itemId) {
+        const input = document.getElementById(inputId);
+        const currentValue = parseInt(input.value);
+        if (currentValue > 1) {
+            input.value = currentValue - 1;
+            updateCart(itemId);
+        }
+    }
+    
+    function updateCart(itemId) {
+        document.getElementById('update-form-' + itemId).submit();
+    }
+</script>
+{% endblock %}

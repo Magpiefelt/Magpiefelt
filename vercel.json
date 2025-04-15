@@ -1,0 +1,14 @@
+{
+  "builds": [
+    {
+      "src": "magpie_crafts/wsgi.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*) ",
+      "dest": "magpie_crafts/wsgi.py"
+    }
+  ]
+}

@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .magpie-divider {
+        position: relative;
+        height: 30px;
+        margin: 2rem 0;
+    }
+    
+    .magpie-divider::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background-color: #e5e7eb;
+    }
+    
+    .magpie-divider::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 30px;
+        background-image: url("{% static 'images/magpie-silhouette.svg' %}");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-color: #f9fafb;
+        padding: 0 10px;
+    }
+    
+    .feather-accent {
+        position: relative;
+    }
+    
+    .feather-accent::before {
+        content: "";
+        position: absolute;
+        top: -10px;
+        left: -15px;
+        width: 20px;
+        height: 30px;
+        background-image: url("{% static 'images/feather.svg' %}");
+        background-repeat: no-repeat;
+        background-size: contain;
+        opacity: 0.2;
+    }
+    
+    .dashboard-card {
+        transition: all 0.3s ease;
+    }
+    
+    .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-2 text-center">AI Content Dashboard</h1>
+    <p class="text-gray-600 text-center mb-8">Generate and manage AI-assisted content for your store</p>
+    
+    <div class="magpie-divider"></div>
+    
+    <!-- Content Generation Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <!-- Product Descriptions -->
+        <div class="bg-white rounded-lg shadow-md p-6 dashboard-card">
+            <div class="flex items-center justify-center w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full mb-4 mx-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+            </div>
+            
+            <h2 class="text-xl font-semibold text-center mb-4">Product Descriptions</h2>
+            <p class="text-gray-600 mb-6 text-center">
+                Generate engaging product descriptions for your felting kits and handmade art.
+            </p>
+            
+            <a href="{% url 'admin:products_customproduct_changelist' %}" class="block w-full bg-indigo-600 hover:bg-indigo-700 text-white text-center font-bold py-2 px-4 rounded transition">
+                Go to Products
+            </a>
+        </div>
+        
+        <!-- Blog Posts -->
+        <div class="bg-white rounded-lg shadow-md p-6 dashboard-card">
+            <div class="flex items-center justify-center w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full mb-4 mx-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                </svg>
+            </div>
+            
+            <h2 class="text-xl font-semibold text-center mb-4">Blog Articles</h2>
+            <p class="text-gray-600 mb-6 text-center">
+                Create educational content and felting tutorials with AI assistance.
+            </p>
+            
+            <a href="{% url 'admin:blog_blogpost_changelist' %}" class="block w-full bg-indigo-600 hover:bg-indigo-700 text-white text-center font-bold py-2 px-4 rounded transition">
+                Go to Blog Posts
+            </a>
+        </div>
+        
+        <!-- Social Media Content -->
+        <div class="bg-white rounded-lg shadow-md p-6 dashboard-card">
+            <div class="flex items-center justify-center w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full mb-4 mx-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                </svg>
+            </div>
+            
+            <h2 class="text-xl font-semibold text-center mb-4">Social Media</h2>
+            <p class="text-gray-600 mb-6 text-center">
+                Generate captions, hashtags, and post content for your social media.
+            </p>
+            
+            <a href="{% url 'admin:social_socialmediapost_changelist' %}" class="block w-full bg-indigo-600 hover:bg-indigo-700 text-white text-center font-bold py-2 px-4 rounded transition">
+                Go to Social Posts
+            </a>
+        </div>
+    </div>
+    
+    <!-- Prompt Templates -->
+    <h2 class="text-2xl font-semibold mb-6 feather-accent">Prompt Templates</h2>
+    
+    <div class="bg-white rounded-lg shadow-md overflow-hidden mb-12">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Content Type</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for template in content_types %}
+                    {% for prompt in template.prompt_templates.all %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">{{ prompt.name }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-500">{{ template.name }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {% if prompt.is_active %}
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                Active
+                            </span>
+                            {% else %}
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                                Inactive
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <a href="{% url 'admin:ai_content_aiprompttemplate_change' prompt.id %}" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">
+                            No prompt templates for {{ template.name }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">
+                            No content types available
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="bg-gray-50 px-6 py-4">
+            <a href="{% url 'admin:ai_content_aiprompttemplate_add' %}" class="text-indigo-600 hover:text-indigo-900">
+                + Add New Prompt Template
+            </a>
+        </div>
+    </div>
+    
+    <!-- Recent Generated Content -->
+    <h2 class="text-2xl font-semibold mb-6 feather-accent">Recent Generated Content</h2>
+    
+    <div class="bg-white rounded-lg shadow-md overflow-hidden mb-12">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Content Type</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Target</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for content in recent_content %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">{{ content.content_type.name }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-500">
+                                {% if content.product %}
+                                Product: {{ content.product.title }}
+                                {% elif content.blog_post %}
+                                Blog: {{ content.blog_post.title }}
+                                {% elif content.social_post %}
+                                Social: {{ content.social_post.title|default:"Untitled" }}
+                                {% else %}
+                                No target
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-500">{{ content.created_at|date:"M d, Y" }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {% if content.is_approved %}
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                Approved
+                            </span>
+                            {% else %}
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                Pending
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <a href="{% url 'admin:ai_content_aigeneratedcontent_change' content.id %}" class="text-indigo-600 hover:text-indigo-900 mr-3">View</a>
+                            {% if not content.is_approved %}
+                            <a href="{% url 'ai_content:approve_content' content.id %}" class="text-green-600 hover:text-green-900">Approve</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500">
+                            No content has been generated yet
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="bg-gray-50 px-6 py-4">
+            <a href="{% url 'admin:ai_content_aigeneratedcontent_changelist' %}" class="text-indigo-600 hover:text-indigo-900">
+                View All Generated Content
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

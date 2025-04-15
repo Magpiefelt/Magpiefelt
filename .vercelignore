@@ -1,0 +1,7 @@
+*.log
+*.tmp
+AppData/
+node_modules/
+venv/
+__pycache__/
+C:/WINDOWS/
