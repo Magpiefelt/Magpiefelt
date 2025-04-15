@@ -237,21 +237,30 @@ GST_RATE = 0.05
 DEFAULT_CURRENCY = 'CAD'
 
 # Oscar settings - must come after MEDIA_URL is defined
-OSCAR_DELETE_IMAGE_FILES = True
 OSCAR_SHOP_NAME = 'Magpie Felt'
 OSCAR_SHOP_TAGLINE = 'Handmade Wool Felting Kits and Art'
 OSCAR_DEFAULT_CURRENCY = 'CAD'
 OSCAR_FROM_EMAIL = 'noreply@magpiefelt.ca'
-OSCAR_DYNAMIC_CLASS_LOADER = 'oscar.core.loading.default_class_loader'
-OSCAR_REQUIRED_ADDRESS_FIELDS = ('first_name', 'last_name', 'line1', 'city', 'country', 'postcode')
+
+# URLs and slugs
+OSCAR_HOMEPAGE = reverse_lazy('catalogue:index')
+OSCAR_ACCOUNTS_REDIRECT_URL = 'customer:profile-view'
+OSCAR_BASKET_COOKIE_OPEN = 'oscar_open_basket'
+OSCAR_BASKET_COOKIE_SECURE = False
+OSCAR_BASKET_COOKIE_LIFETIME = 7 * 24 * 60 * 60
+OSCAR_LOGIN_REDIRECT_URL = '/'
 OSCAR_SLUG_ALLOW_UNICODE = False
 OSCAR_SLUG_MAP = None
 OSCAR_SLUG_FUNCTION = 'oscar.core.utils.default_slugifier'
-OSCAR_HIDDEN_FEATURES = []
-OSCAR_MISSING_IMAGE_URL = MEDIA_URL + 'image_not_found.jpg'
-OSCAR_UPLOAD_ROOT = os.path.join(MEDIA_ROOT, 'uploads/')
-OSCAR_COOKIES_SECURE = False
-OSCAR_COOKIES_HTTPONLY = True
+
+# Recently viewed products
+OSCAR_RECENTLY_VIEWED_PRODUCTS = 20
+OSCAR_RECENTLY_VIEWED_COOKIE_NAME = 'oscar_history'
+OSCAR_RECENTLY_VIEWED_COOKIE_LIFETIME = 7 * 24 * 60 * 60
+OSCAR_RECENTLY_VIEWED_COOKIE_SECURE = False
+OSCAR_RECENTLY_VIEWED_COOKIE_HTTPONLY = True
+
+# Pagination settings
 OSCAR_PRODUCTS_PER_PAGE = 20
 OSCAR_OFFERS_PER_PAGE = 20
 OSCAR_REVIEWS_PER_PAGE = 20
@@ -261,15 +270,87 @@ OSCAR_ORDERS_PER_PAGE = 20
 OSCAR_ADDRESSES_PER_PAGE = 20
 OSCAR_STOCK_ALERTS_PER_PAGE = 20
 OSCAR_DASHBOARD_ITEMS_PER_PAGE = 20
-OSCAR_USE_LESS = False
-OSCAR_USE_DATADOG = False
+
+# Product settings
+OSCAR_MISSING_IMAGE_URL = MEDIA_URL + 'image_not_found.jpg'
+OSCAR_UPLOAD_ROOT = os.path.join(MEDIA_ROOT, 'uploads/')
+OSCAR_DELETE_IMAGE_FILES = True
+
+# Search settings
+OSCAR_SEARCH_FACETS = {
+    'fields': {
+        'product_class': {'name': 'Type', 'field': 'product_class'},
+        'rating': {'name': 'Rating', 'field': 'rating'},
+    },
+    'queries': {
+        'price_range': {
+            'name': 'Price range',
+            'field': 'price',
+            'queries': [
+                # Price ranges
+                ('0_15', 'Under $15'),
+                ('15_50', '$15 to $50'),
+                ('50_100', '$50 to $100'),
+                ('100_', 'Over $100'),
+            ]
+        }
+    }
+}
+
+# Order settings
+OSCAR_INITIAL_ORDER_STATUS = 'Pending'
+OSCAR_INITIAL_LINE_STATUS = 'Pending'
+OSCAR_ORDER_STATUS_PIPELINE = {
+    'Pending': ('Being processed', 'Cancelled',),
+    'Being processed': ('Processed', 'Cancelled',),
+    'Processed': ('Shipped', 'Cancelled',),
+    'Shipped': ('Delivered', 'Cancelled',),
+    'Delivered': (),
+    'Cancelled': (),
+}
+OSCAR_LINE_STATUS_PIPELINE = {
+    'Pending': ('Being processed', 'Cancelled',),
+    'Being processed': ('Processed', 'Cancelled',),
+    'Processed': ('Shipped', 'Cancelled',),
+    'Shipped': ('Delivered', 'Cancelled',),
+    'Delivered': (),
+    'Cancelled': (),
+}
+
+# Customer settings
 OSCAR_ALLOW_ANON_CHECKOUT = True
 OSCAR_ALLOW_ANON_REVIEWS = True
 OSCAR_MODERATE_REVIEWS = False
+OSCAR_REQUIRED_ADDRESS_FIELDS = ('first_name', 'last_name', 'line1', 'city', 'country', 'postcode')
 OSCAR_SEND_REGISTRATION_EMAIL = True
+OSCAR_DEFAULT_WISHLIST_NAME = 'Default wishlist'
+
+# Communication settings
 OSCAR_EAGER_ALERTS = False
-OSCAR_LOGIN_REDIRECT_URL = '/'
+OSCAR_SEND_REGISTRATION_EMAIL = True
+
+# Dashboard settings
 OSCAR_DASHBOARD_DEFAULT_ACCESS_FUNCTION = 'oscar.apps.dashboard.nav.default_access_fn'
+
+# Misc settings
+OSCAR_COOKIES_SECURE = False
+OSCAR_COOKIES_HTTPONLY = True
+OSCAR_USE_LESS = False
+OSCAR_USE_DATADOG = False
+OSCAR_HIDDEN_FEATURES = []
+OSCAR_DYNAMIC_CLASS_LOADER = 'oscar.core.loading.default_class_loader'
+
+# Promotions settings
+OSCAR_PROMOTION_POSITIONS = (('page', 'Page'),
+                            ('right', 'Right-hand sidebar'),
+                            ('left', 'Left-hand sidebar'))
+
+# Reviews settings
+OSCAR_ALLOW_ANON_REVIEWS = True
+OSCAR_MODERATE_REVIEWS = False
+
+# Checkout settings
+OSCAR_ALLOW_ANON_CHECKOUT = True
 OSCAR_SEARCH_FACETS = {
     'fields': {
         'product_class': {'name': 'Type', 'field': 'product_class'},
