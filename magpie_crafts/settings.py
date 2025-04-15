@@ -25,7 +25,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',  # Required by Django Oscar
+    'django.contrib.sites',
+    'django.contrib.flatpages', # Required by Django Oscar
     
     # Django Oscar apps
     'oscar',
@@ -100,6 +101,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'django_browser_reload.middleware.BrowserReloadMiddleware',
     'oscar.apps.basket.middleware.BasketMiddleware',  # Oscar basket middleware
 ]
