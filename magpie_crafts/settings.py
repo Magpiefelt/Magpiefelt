@@ -73,37 +73,6 @@ MIDDLEWARE = [
     'django_browser_reload.middleware.BrowserReloadMiddleware',
      'oscar.apps.basket.middleware.BasketMiddleware',
 ]
-# Oscar settings
-OSCAR_SHOP_NAME = 'Magpie Felt'
-OSCAR_SHOP_TAGLINE = 'Handmade Wool Felting Kits and Art'
-OSCAR_DEFAULT_CURRENCY = 'CAD'
-OSCAR_FROM_EMAIL = 'noreply@magpiefelt.ca'
-OSCAR_DYNAMIC_CLASS_LOADER = 'oscar.core.loading.default_class_loader'
-OSCAR_REQUIRED_ADDRESS_FIELDS = ('first_name', 'last_name', 'line1', 'city', 'country', 'postcode')
-OSCAR_SLUG_ALLOW_UNICODE = False
-OSCAR_SLUG_MAP = None
-OSCAR_SLUG_FUNCTION = 'oscar.core.utils.default_slugifier'
-OSCAR_HIDDEN_FEATURES = []
-OSCAR_MISSING_IMAGE_URL = MEDIA_URL + 'image_not_found.jpg'
-OSCAR_UPLOAD_ROOT = os.path.join(MEDIA_ROOT, 'uploads/')
-OSCAR_COOKIES_SECURE = False
-OSCAR_COOKIES_HTTPONLY = True
-OSCAR_USE_LESS = False
-OSCAR_USE_DATADOG = False
-OSCAR_ALLOW_ANON_CHECKOUT = True
-OSCAR_ALLOW_ANON_REVIEWS = True
-OSCAR_MODERATE_REVIEWS = False
-OSCAR_SEND_REGISTRATION_EMAIL = True
-OSCAR_EAGER_ALERTS = False
-OSCAR_LOGIN_REDIRECT_URL = '/'
-OSCAR_DASHBOARD_DEFAULT_ACCESS_FUNCTION = 'oscar.apps.dashboard.nav.default_access_fn'
-
-# Haystack settings (required by Oscar)
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
-    },
-}
 
 ROOT_URLCONF = 'magpie_crafts.urls'
 
@@ -203,6 +172,79 @@ if os.environ.get('USE_S3', 'False') == 'True':
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 else:
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Oscar settings
+OSCAR_SHOP_NAME = 'Magpie Felt'
+OSCAR_SHOP_TAGLINE = 'Handmade Wool Felting Kits and Art'
+OSCAR_DEFAULT_CURRENCY = 'CAD'
+OSCAR_FROM_EMAIL = 'noreply@magpiefelt.ca'
+OSCAR_DYNAMIC_CLASS_LOADER = 'oscar.core.loading.default_class_loader'
+OSCAR_REQUIRED_ADDRESS_FIELDS = ('first_name', 'last_name', 'line1', 'city', 'country', 'postcode')
+OSCAR_SLUG_ALLOW_UNICODE = False
+OSCAR_SLUG_MAP = None
+OSCAR_SLUG_FUNCTION = 'oscar.core.utils.default_slugifier'
+OSCAR_HIDDEN_FEATURES = []
+OSCAR_MISSING_IMAGE_URL = MEDIA_URL + 'image_not_found.jpg'
+OSCAR_UPLOAD_ROOT = os.path.join(MEDIA_ROOT, 'uploads/')
+OSCAR_COOKIES_SECURE = False
+OSCAR_COOKIES_HTTPONLY = True
+OSCAR_USE_LESS = False
+OSCAR_USE_DATADOG = False
+OSCAR_ALLOW_ANON_CHECKOUT = True
+OSCAR_ALLOW_ANON_REVIEWS = True
+OSCAR_MODERATE_REVIEWS = False
+OSCAR_SEND_REGISTRATION_EMAIL = True
+OSCAR_EAGER_ALERTS = False
+OSCAR_LOGIN_REDIRECT_URL = '/'
+OSCAR_DASHBOARD_DEFAULT_ACCESS_FUNCTION = 'oscar.apps.dashboard.nav.default_access_fn'
+# Oscar Dashboard Navigation
+OSCAR_DASHBOARD_NAVIGATION = [
+    {
+        'label': 'Dashboard',
+        'icon': 'fas fa-tachometer-alt',
+        'url_name': 'dashboard:index',
+    },
+    {
+        'label': 'Catalogue',
+        'icon': 'fas fa-sitemap',
+        'children': [
+            {
+                'label': 'Products',
+                'url_name': 'dashboard:catalogue-product-list',
+            },
+            {
+                'label': 'Categories',
+                'url_name': 'dashboard:catalogue-category-list',
+            },
+        ]
+    },
+    {
+        'label': 'Customers',
+        'icon': 'fas fa-users',
+        'children': [
+            {
+                'label': 'Customers',
+                'url_name': 'dashboard:users-index',
+            },
+        ]
+    },
+    {
+        'label': 'Orders',
+        'icon': 'fas fa-shopping-cart',
+        'children': [
+            {
+                'label': 'Orders',
+                'url_name': 'dashboard:order-list',
+            },
+        ]
+    },
+]
+
+# Haystack settings (required by Oscar)
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
