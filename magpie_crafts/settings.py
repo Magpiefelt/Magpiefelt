@@ -3,19 +3,29 @@ import os
 from dotenv import load_dotenv
 from django.urls import reverse_lazy
 
+# Load environment variables from .env file
+load_dotenv()
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-default-key-for-development')
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
-# Add this AFTER STATIC_ROOT is defined
-import os
+# Create static directory if it doesn't exist
 os.makedirs(STATIC_ROOT, exist_ok=True)
-
-os.makedirs(STATIC_ROOT, exist_ok=True)
-# Load environment variables from .env file
-load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
