@@ -47,9 +47,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'django.contrib.flatpages', # Required by Django Oscar
-
-    # Django Allauth
+    'django.contrib.flatpages',
+    
+    # Add these django-allauth apps
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -478,4 +478,15 @@ OSCAR_DASHBOARD_NAVIGATION = [
             },
         ]
     },
+
+    AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# Allauth settings
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_EMAIL_REQUIRED = True
+LOGIN_REDIRECT_URL = '/'
 ]
