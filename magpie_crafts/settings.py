@@ -83,6 +83,13 @@ INSTALLED_APPS = [
 # Required by Django Oscar
 SITE_ID = 1
 
+# Haystack settings (required by Oscar) - Added this missing configuration
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+    },
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -216,12 +223,12 @@ else:
     DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
 
 # Stripe settings
-STRIPE_PUBLIC_KEY = os.environ.get('pk_test_51REBhaICm0BfGMhchpHaqPkclDgVfqdIQcVYhheJr1Nv6Yp63Y7i29hfug6URPGsYnLfWXWC9i97O54pFqGhW3hC00pWUJVPL3', '')
-STRIPE_SECRET_KEY = os.environ.get('sk_test_51REBhaICm0BfGMhc9sr7BQnZOHNKtDmWkCwNWyyP96CZ8UAiuwdri6yM5RxXELEX6eWy25xaZfnTeuMkyCW9F3Jq00SYqzdq5T', '')
+STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY', 'pk_test_51REBhaICm0BfGMhchpHaqPkclDgVfqdIQcVYhheJr1Nv6Yp63Y7i29hfug6URPGsYnLfWXWC9i97O54pFqGhW3hC00pWUJVPL3')
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', 'sk_test_51REBhaICm0BfGMhc9sr7BQnZOHNKtDmWkCwNWyyP96CZ8UAiuwdri6yM5RxXELEX6eWy25xaZfnTeuMkyCW9F3Jq00SYqzdq5T')
 STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET', '')
 
 # OpenAI API settings
-OPENAI_API_KEY = os.environ.get('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', '')
+OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY', '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')
 
 # Canadian GST rate (5%)
 GST_RATE = 0.05
