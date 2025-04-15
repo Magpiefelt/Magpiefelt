@@ -18,12 +18,13 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(','
 
 # Application definition
 INSTALLED_APPS = [
-    'django.contrib.admin',
+      'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites'
     'oscar',
     'oscar.apps.address',
     'oscar.apps.analytics',
@@ -33,6 +34,7 @@ INSTALLED_APPS = [
     'oscar.apps.checkout',
     'oscar.apps.shipping',
     'oscar.apps.payment',
+    'oscar.apps.partner'
     'oscar.apps.offer',
     'oscar.apps.order',
     'oscar.apps.customer',
@@ -53,6 +55,7 @@ INSTALLED_APPS = [
     'oscar.apps.dashboard.communications',
     'oscar.apps.dashboard.shipping',
     'oscar.apps.partner',
+SITE_ID = 1
     
     # Third-party apps
     'tailwind',
