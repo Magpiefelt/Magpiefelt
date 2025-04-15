@@ -11,6 +11,7 @@ from django.apps import apps
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
     
     # Oscar URLs
     path('', include(apps.get_app_config('oscar').urls[0])),
