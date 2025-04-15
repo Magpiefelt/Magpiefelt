@@ -77,6 +77,7 @@ MIDDLEWARE = [
 OSCAR_SHOP_NAME = 'Magpie Felt'
 OSCAR_DEFAULT_CURRENCY = 'CAD'
 OSCAR_DYNAMIC_CLASS_LOADER = 'oscar.core.loading.default_class_loader'
+OSCAR_REQUIRED_ADDRESS_FIELDS = ('first_name', 'last_name', 'line1', 'city', 'country', 'postcode')
 
 # Haystack settings (required by Oscar)
 HAYSTACK_CONNECTIONS = {
@@ -89,7 +90,7 @@ ROOT_URLCONF = 'magpie_crafts.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -98,6 +99,14 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # Oscar context processors - add these directly to the existing list
+                'oscar.apps.search.context_processors.search_form',
+                'oscar.apps.checkout.context_processors.checkout',
+                'oscar.apps.customer.notifications.context_processors.notifications',
+                'oscar.apps.promotions.context_processors.promotions',
+    ],
+},
+
             ],
         },
     },
