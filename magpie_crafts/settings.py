@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from django.urls import reverse_lazy
 
 # Load environment variables from .env file
 load_dotenv()
@@ -243,7 +244,7 @@ OSCAR_DEFAULT_CURRENCY = 'CAD'
 OSCAR_FROM_EMAIL = 'noreply@magpiefelt.ca'
 
 # URLs and slugs
-OSCAR_HOMEPAGE = reverse_lazy('catalogue:index')
+OSCAR_HOMEPAGE = '/'
 OSCAR_ACCOUNTS_REDIRECT_URL = 'customer:profile-view'
 OSCAR_BASKET_COOKIE_OPEN = 'oscar_open_basket'
 OSCAR_BASKET_COOKIE_SECURE = False
@@ -260,6 +261,29 @@ OSCAR_RECENTLY_VIEWED_COOKIE_LIFETIME = 7 * 24 * 60 * 60
 OSCAR_RECENTLY_VIEWED_COOKIE_SECURE = False
 OSCAR_RECENTLY_VIEWED_COOKIE_HTTPONLY = True
 
+# Partner settings
+OSCAR_PARTNER_WRAPPERS = {}
+
+# Promotions settings
+OSCAR_PROMOTIONS_ENABLED = True
+
+# Communication settings
+OSCAR_SAVE_SENT_EMAILS_TO_DB = True
+
+# Rating settings
+OSCAR_RATINGS_RANGE = range(1, 6)
+
+# Date/time format settings
+OSCAR_DATE_FORMAT = 'j F Y'
+OSCAR_DATETIME_FORMAT = 'j F Y, H:i'
+
+# Checkout settings
+OSCAR_CHECKOUT_STEPS = [
+    'checkout.steps.shipping_address',
+    'checkout.steps.shipping_method',
+    'checkout.steps.payment_method',
+    'checkout.steps.preview',
+]
 # Pagination settings
 OSCAR_PRODUCTS_PER_PAGE = 20
 OSCAR_OFFERS_PER_PAGE = 20
