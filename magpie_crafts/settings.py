@@ -482,7 +482,8 @@ OSCAR_DASHBOARD_NAVIGATION = [
     AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
-    ]
+       # add any others here
+]
 
 # Allauth settings
 ACCOUNT_EMAIL_VERIFICATION = 'none'
