@@ -467,7 +467,7 @@ OSCAR_DASHBOARD_NAVIGATION = [
                 'url_name': 'dashboard:users-index',
             },
         ]
-    },
+    },   
     {
         'label': 'Orders',
         'icon': 'fas fa-shopping-cart',
@@ -479,10 +479,11 @@ OSCAR_DASHBOARD_NAVIGATION = [
         ]
     },
 ]
-    AUTHENTICATION_BACKENDS = [
+
+AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
-       # add any others here
+    # add any others here
 ]
 
 # Allauth settings
@@ -490,4 +491,3 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 LOGIN_REDIRECT_URL = '/'
-
